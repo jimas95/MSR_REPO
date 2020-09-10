@@ -1,17 +1,7 @@
 cols = 4
 rows = 4
 
-#type here....!
-#thank you !
-#Kailey: 
-def printMaze(maze):
-    print (maze)
-    for col in range(cols):
-        #for row in rows:
-        print(" ____     ____    ____    ____")
-        print()
-        print(" |  |     |  |    |  |    |  |") 
-        print(" ____     ____    ____    ____")
+
 
 def readMaze():
     fileName = "defaultMaze.txt"
@@ -20,7 +10,7 @@ def readMaze():
     for line in lines:
         #print("new line : " + line)
         temp=line.strip().split()
-        # okei so now temp has all the values of the first row from the matrix 
+        print_top_row(temp)
 
 
 if __name__ == "__main__":
