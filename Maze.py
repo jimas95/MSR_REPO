@@ -2,14 +2,11 @@ cols = 4
 rows = 4
 
 
-def printMaze(maze):
-    print (maze)
-    for col in range(cols):
-        #for row in rows:
-        print(" ____     ____    ____    ____")
-        print()
-        print(" |  |     |  |    |  |    |  |") 
-        print(" ____     ____    ____    ____")
+def printMaze():
+    fileName = "defaultMaze.txt"
+    f = open(fileName, "r")
+    maze = f.read()
+    print(maze)
 
 def print_top_walls(line): 
     text = " "
@@ -54,8 +51,6 @@ def print_side_walls(line):
 def readMaze():
     fileName = "defaultMaze.txt"
     f = open(fileName, "r")
-    #lines = f.readlines()
-    #print(lines)
     while True:
         line = f.readline()
         if not line: 
@@ -67,10 +62,6 @@ def readMaze():
         #print_bottom_walls(temp)
     print(" ________________")
 
-if __name__ == "__main__":
-    print ("Hello Mr. Robot")
-    readMaze()
-    print()
 
 
 
