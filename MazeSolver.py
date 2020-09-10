@@ -18,6 +18,7 @@
 maxCoord = 0
 goalPos = (0,0)
 maze = []
+makredMaze = []
 N = 1
 S = 2
 E = 4
@@ -34,6 +35,7 @@ def canIgo(pos,dir):
     global maze
 
     cell = maze[pos[1]][pos[0]]
+    print (cell)
     if cell&dir: return False
     return True
 
@@ -48,15 +50,37 @@ def reachGoal(pos):
     return False
 
 def insideMaze(pos):
-    print(maxCoord)
     if pos[0]> maxCoord: return False
     if pos[1]> maxCoord: return False
     if pos[0] < 0: return False
     if pos[1] < 0: return False
     return True
 
-# def find_path():
-#     a=  5
+def find_path(pos):
+    global makredMaze
+    x = pos[0]
+    y = pos[1]
+    if insideMaze(pos) : return False
+    if reachGoal(pos): return True
+    if makredMaze[y][x] : False
+    makredMaze[y][x] = True
+    if(find_path((x,y-1)) == True): return True # use canIgo first
+    if(find_path((x+1,y)) == True): return True
+    if(find_path((x,y+1)) == True): return True
+    if(find_path((x-1,y)) == True): return True
+    makredMaze[y][x] = False
+    return False
+# if (x,y not open) return false
+# mark x,y as part of solution path
+# if (FIND-PATH(North of x,y) == true) return true
+# if (FIND-PATH(East of x,y) == true) return true
+# if (FIND-PATH(South of x,y) == true) return true
+# if (FIND-PATH(West of x,y) == true) return true
+
+# unmark x,y as part of solution path
+# return false
+
+
 
 def solveMaze(mazeInput,StartPos,EndPos):
     global maze,maxCoord,goalPos
@@ -65,7 +89,7 @@ def solveMaze(mazeInput,StartPos,EndPos):
     maxCoord = len(maze)-1
     goalPos = EndPos
     # robotPos = StartPos
-    print(canIgo((0,0),1))
-    print(canIgo((0,0),2))
-    print(canIgo((0,0),4))
-    print(canIgo((0,0),8))
+    # print(canIgo((0,1),1))
+    # print(canIgo((0,1),2))
+    # print(canIgo((0,1),4))
+    # print(canIgo((0,1),8))
