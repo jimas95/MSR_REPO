@@ -1,0 +1,3 @@
+0000 -> no wall
+1111 -> everwer is wall
+WESN
