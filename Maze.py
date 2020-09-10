@@ -1,12 +1,30 @@
+#reads maze from txt file
+#file name defaultMaze.txt
 cols = 4
 rows = 4
 
 
-def printMaze():
+def readMaze():
     fileName = "defaultMaze.txt"
     f = open(fileName, "r")
     maze = f.read()
     print(maze)
+
+def getMaze():
+    fileName = "defaultMaze.txt"
+    f = open(fileName, "r")
+    maze =[]
+    while True:
+        line = f.readline()
+        if not line: 
+            break
+        rowList = []
+        temp=line.strip().split()
+        for item in temp:
+            rowList.append(int(item))
+        maze.append(rowList)
+    return maze
+
 
 def print_top_walls(line): 
     text = " "
@@ -48,7 +66,7 @@ def print_side_walls(line):
 
 
 
-def readMaze():
+def printMaze():
     fileName = "defaultMaze.txt"
     f = open(fileName, "r")
     while True:
