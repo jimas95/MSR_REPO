@@ -80,6 +80,3 @@ def printMaze():
         #print_bottom_walls(temp)
     print(" ________________")
 
-
-
-

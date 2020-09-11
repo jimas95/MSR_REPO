@@ -18,11 +18,7 @@
 maxCoord = 0
 goalPos = (0,0)
 maze = []
-makredMaze = []
-N = 1
-S = 2
-E = 4
-W = 8
+path = []
 
 
 #return if we are allowed to go to this direction dir = 1,2,4,8
@@ -33,9 +29,8 @@ W = 8
 #pos(x,y)
 def canIgo(pos,dir):
     global maze
-
+        # print ("can I go fuction :  position--> " +str(pos[0])+" " +str(pos[1]))
     cell = maze[pos[1]][pos[0]]
-    print (cell)
     if cell&dir: return False
     return True
 
@@ -43,9 +38,10 @@ def canIgo(pos,dir):
 
 #Check if we reach the goal
 def reachGoal(pos):
-    global goalPos
+    global goalPos,path
     if pos == goalPos:
         print("good job!")
+        path[pos[1]][pos[0]] = True
         return True
     return False
 
@@ -57,39 +53,44 @@ def insideMaze(pos):
     return True
 
 def find_path(pos):
-    global makredMaze
+    global path
     x = pos[0]
     y = pos[1]
-    if insideMaze(pos) : return False
-    if reachGoal(pos): return True
-    if makredMaze[y][x] : False
-    makredMaze[y][x] = True
-    if(find_path((x,y-1)) == True): return True # use canIgo first
-    if(find_path((x+1,y)) == True): return True
-    if(find_path((x,y+1)) == True): return True
-    if(find_path((x-1,y)) == True): return True
-    makredMaze[y][x] = False
-    return False
-# if (x,y not open) return false
-# mark x,y as part of solution path
-# if (FIND-PATH(North of x,y) == true) return true
-# if (FIND-PATH(East of x,y) == true) return true
-# if (FIND-PATH(South of x,y) == true) return true
-# if (FIND-PATH(West of x,y) == true) return true
+    if (not insideMaze(pos))  : return False
+    if reachGoal(pos)   : return True
+    if path[y][x]==True : return False
 
-# unmark x,y as part of solution path
-# return false
+    path[y][x] = True 
+    pos=(x,y-1) 
+    if(insideMaze(pos) and canIgo((x,y),1)): #1 is N
+        if(find_path(pos) == True): return True # use canIgo first
+    pos=(x+1,y)
+    if(insideMaze(pos) and canIgo((x,y),4)):#4 is S
+        if(find_path(pos) == True): return True
+    pos=(x,y+1)
+    if(insideMaze(pos) and canIgo((x,y),2)):#2 is S
+        if(find_path(pos) == True): return True
+    pos=(x-1,y)
+    if(insideMaze(pos) and canIgo((x,y),8)):#8 is W
+        if(find_path(pos) == True): return True
+
+    path[y][x] = False
+    return False
+
 
 
 
 def solveMaze(mazeInput,StartPos,EndPos):
-    global maze,maxCoord,goalPos
+    global maze,path,maxCoord,goalPos
 
     maze = mazeInput
     maxCoord = len(maze)-1
     goalPos = EndPos
-    # robotPos = StartPos
-    # print(canIgo((0,1),1))
-    # print(canIgo((0,1),2))
-    # print(canIgo((0,1),4))
-    # print(canIgo((0,1),8))
+    print("goal position : " + str(goalPos[0]) + " " + str(goalPos[1]))
+    # path = [[False]*mazeInput]*mazeInput
+    print("path finding starts...")
+    path = [[False,False,False,False],[False,False,False,False],[False,False,False,False],[False,False,False,False]]
+    find_path(StartPos)
+    print("Final path:")
+    for i in range(len(path)):
+        print(path[i])

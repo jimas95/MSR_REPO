@@ -12,7 +12,7 @@ if __name__ == "__main__":
     Maze.printMaze()
     myMaze = Maze.getMaze()
     print (myMaze)
-    MazeSolver.solveMaze(myMaze,(0,0),(4,4))
+    MazeSolver.solveMaze(myMaze,(3,3),(0,0))
 
 
 
