@@ -1,10 +1,24 @@
 import numpy as np
 import random
 
-#0 if matrix is a wall, 1 if it is a space
+#0 if matrix is a wall, 1 if it is a free space
+
+def getOneHopNeighbor(cellTuple, gridSize):
+    neighbors = []
+    if 0 <= cellTuple[0] - 1:
+        neighbors.append((cellTuple[0] - 1, cellTuple[1]))
+    if 0 <= cellTuple[1] - 1:
+        neighbors.append((cellTuple[0], cellTuple[1] - 1))
+    if cellTuple[1] + 1 < gridSize:
+        neighbors.append((cellTuple[0], cellTuple[1] + 1))
+    if cellTuple[0] + 1 < gridSize:
+        neighbors.append((cellTuple[0] + 1, cellTuple[1]))
+    return neighbors
+
+
 if __name__ == "__main__":
     size = random.randint(3, 10)
-    #size = 4
+    #size = 6
     #All cells are walls.
     maze = np.zeros((size, size))
     frontierList = []
@@ -12,6 +26,7 @@ if __name__ == "__main__":
     BRow = random.randint(0, size - 1)
     BCol = random.randint(0, size - 1)
     maze[BRow, BCol] = 1
+    path = [(BRow, BCol)]
     print("B is " + str((BRow, BCol)))
     #Add that cell's neighbors to the wall list.
     if 0 <= BRow - 1:
@@ -30,42 +45,17 @@ if __name__ == "__main__":
         (CRow, CCol) = frontierList[randomIndex]
         print("C is " + str((CRow, CCol)))
         #The wall divides two cells, A and B.
-        if BRow < CRow:
-            ARow = CRow + 1
-            ACol = CCol
-        elif CRow < BRow:
-            ARow = CRow - 1
-            ACol = CCol
-        elif BCol < CCol:
-            ARow = CRow
-            ACol = CCol + 1
-        else:
-            ARow = CRow
-            ACol = CCol - 1
-        print("A is " + str((ARow, ACol)))
-        #If either A or B is a wall
-        if maze[BRow, BCol] == 0 or (0 <= ARow and ARow < size and 0 <= ACol and ACol < size and maze[ARow, ACol] == 0):
-            # Let D be whichever of A and B that is the wall
-            if maze[BRow, BCol] == 0:
-                DRow = BRow
-                DCol = BCol
-            else:
-                DRow = ARow
-                DCol = ACol
-            print("D is " + str((DRow, DCol)))
-            #Make C free
+        Cneighbors = getOneHopNeighbor((CRow, CCol), size)
+        sum = 0
+        for i in range(len(Cneighbors)):
+            sum += maze[Cneighbors[i]]
+        if sum == 1:
             maze[CRow, CCol] = 1
-            #Make D free
-            maze[DRow, DCol] = 1
-            #Add the walls of D to the wall list
-            if 0 <= DRow - 1 and maze[DRow - 1, DCol] == 0:
-                frontierList.append((DRow - 1, DCol))
-            if 0 <= DCol - 1 and maze[DRow, DCol - 1] == 0:
-                frontierList.append((DRow, DCol - 1))
-            if DCol + 1 < size and maze[DRow, DCol + 1] == 0:
-                frontierList.append((DRow, DCol + 1))
-            if DRow + 1 < size and maze[DRow + 1, DCol] == 0:
-                frontierList.append((DRow + 1, DCol))
+            path.append((CRow, CCol))
+            for t in Cneighbors:
+                if maze[t] == 0:
+                    frontierList.append(t)
+
         #Remove C from the wall list
         p = frontierList.pop(randomIndex)
         print(frontierList)
